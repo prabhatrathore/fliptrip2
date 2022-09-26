@@ -8,6 +8,7 @@ const tourroute = ({ match }) => (
   <Switch>
     {/* <Redirect exact from={`${match.url}/`} to={`${match.url}/basic`} /> */}
     <Route path={`${match.url}/forms`} component={Forms} />
+    {/* app/tour/forms/ */}
     {/* <Route path={`${match.url}/tables`} component={Tables} /> */}
   </Switch>
 );

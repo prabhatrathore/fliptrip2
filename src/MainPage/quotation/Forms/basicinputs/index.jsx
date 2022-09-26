@@ -8,10 +8,12 @@
 // // import { ATTRIBUTEGet } from "../../../redux/actions/Attribute/Attribute.actions";
 // import ReactQuill from "react-quill"; // ES6
 // import { AddModal } from "../Utility/Modal";
-// import CustomButton from "../Utility/Button";
-// import Attribute from "./Attribute";
-// import { DashboardBox } from "../Utility/DashboardBox";
-// import FileUpload from "../Utility/FileUpload";
+import {
+  quotationAdd,
+  get,
+  deleteQuotation,
+  update,
+} from "../../../../redux/features/quotation/quotationSlice";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 
@@ -21,6 +23,7 @@ import React, { useState, useEffect, Component } from "react";
 import Select from "react-select";
 
 const Basicinputs = () => {
+  const dispatch = useDispatch();
   const [destinationName, setDestinationName] = useState("");
   const [durationOfTour, setDurationOfTour] = useState(0);
   const [numberOfGuest, setNumberOfGuest] = useState(0);
@@ -28,12 +31,12 @@ const Basicinputs = () => {
   /////
   const [childWithoutBed, setChildWithoutBed] = useState(0);
   const [childWithBed, setChildWithBed] = useState(0);
-  const [hotelDetail, setHotelDetail] = useState([]); ////////////
+  // const [hotelDetail, setHotelDetail] = useState([]); //
 
-  const [visaRequired, setVisaRequired] = useState("");
+  const [visaRequired, setVisaRequired] = useState(false);
   const [visaOnArrival, setVisaOnArrival] = useState("");
   ///////warehouse address
-  const [airportTransfer, setAirportTransfer] = useState("");
+  // const [airportTransfer, setAirportTransfer] = useState("");
   const [tour, setTour] = useState("");
   const [leadId, setLeadId] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -45,32 +48,89 @@ const Basicinputs = () => {
   const [tax, setTax] = useState(0);
   const [amountWithTax, setAmountWithTax] = useState(0);
   const [dayOfItinerary, setDayOfItinerary] = useState("");
+  const [hotelName, setHotelName] = useState("");
+  const [roomType, setRoomType] = useState("");
+  const [numberOfNight, setNumberOfNight] = useState("");
+  const [checkIn, setCheckIn] = useState("");
+  const [checkout, setCheckout] = useState("");
+  const [rating, setRating] = useState(0);
+  const [hotelAddress, setHotelAddress] = useState(0);
+  const [airportTransfer, setAirportTransfer] = useState("");
+  //traveller details
+  const [nameOfGuest, setNameOfGuest] = useState("");
+  const [age, setAge] = useState(0);
+  /////
+  // const [otherTraveller, setOtherTraveller] = useState(false);
+  const [formValues, setFormValues] = useState([{ nameOfGuest: "", age: "" }]);
+  const [inputList, setinputList] = useState([{ nameOfGuest: "", age: "" }]);
+  //////
 
-  const [type, setType] = useState("single");
+  const handleinputchange = (e, index) => {
+    const { name, value } = e.target;
+    const list = [...inputList];
+    list[index][name] = value;
+    setinputList(list);
+  };
 
-  // const [despcription, setdespcription] = useState("");
-  // const [specifications, setSpecifications] = useState("");
-  // const [modalBox, setModalBox] = useState(false);
-  // const [modalType, setModalType] = useState("");
-  // const [modalName, setModalName] = useState("");
-  // const [isPhysicalProduct, setIsPhysicalProduct] = useState(false);
+  const handleremove = (index) => {
+    const list = [...inputList];
+    list.splice(index, 1);
+    setinputList(list);
+  };
+
+  const handleaddclick = () => {
+    setinputList([...inputList, { firstName: "", lastName: "" }]);
+  };
   const handleSubmit = (e) => {
-    if (destinationName == "") {
-      throw "destinationName name is mandatory";
-    }
+    e.preventDefault();
+    // if (destinationName == "") {
+    //   throw "destinationName name is mandatory";
+    // }
+    // if (numberOfGuest == "") {
+    //   throw "number Of Guest is mandatory";
+    // }
+    // if (adultCount == "") {
+    //   throw "adult Count is mandatory";
+    // }
+    // if (visaRequired == "") {
+    //   throw "visa Required is mandatory";
+    // }
+    // if (tour == "") {
+    //   throw "tour is mandatory";
+    // }
+    // if (startDate == "") {
+    //   throw "start Date is mandatory";
+    // }
+    // if (amount == "") {
+    //   throw "amount is mandatory";
+    // }
     let obj = {
       destinationName,
       durationOfTour,
       numberOfGuest,
       adultCount,
       childWithoutBed,
-      childWithBed: Number,
-
-      hotelDetail,
-      // tourDetails,
+      childWithBed,
+      travellersDetails: [
+        {
+          name: nameOfGuest,
+          age,
+        },
+      ],
+      // hotelDetail,
+      hotelDetail: [
+        {
+          hotelName,
+          roomType,
+          numberOfNight,
+          checkIn,
+          checkout,
+          rating,
+          hotelAddress,
+        },
+      ],
       visaRequired,
       visaOnArrival,
-
       airportTransfer,
       tour,
       leadId,
@@ -82,11 +142,48 @@ const Basicinputs = () => {
       amountWithTax,
       dayOfItinerary,
     };
-    console.log(obj, "send Obj");
-    e.preventDefault();
-    //   dispatch(QUOTATIONAdd(obj));
+
+    dispatch(quotationAdd(obj));
+    console.log(obj, "send Obj9");
+    // console.log("send you data ");
   };
 
+  let array = [];
+  // const addDiv = () => {
+  //   <div className="row">
+  //     <div className="col-sm-6">
+  //       <div className="form-group row">
+  //         <label className="col-form-label col-md-4">
+  //           Name Of Guest
+  //           <span className="text-danger">*</span>
+  //         </label>
+  //         <div className="col-sm-8">
+  //           <input
+  //             type="text"
+  //             className="form-control"
+  //             value={nameOfGuest}
+  //             onChange={(e) => setNameOfGuest(e.target.value)}
+  //           />
+  //         </div>
+  //       </div>
+  //     </div>
+  //     <div className="col-sm-6">
+  //       <div className="form-group row">
+  //         <label className="col-form-label col-md-4">
+  //           Age <span className="text-danger">*</span>
+  //         </label>
+  //         <div className="col-sm-8">
+  //           <input
+  //             type="number"
+  //             className="form-control"
+  //             value={age}
+  //             onChange={(e) => setAge(e.target.value)}
+  //           />
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </div>;
+  // };
   return (
     //
     // http://localhost:8080/app/quotation/forms
@@ -113,8 +210,8 @@ const Basicinputs = () => {
                 <h4 className="card-title mb-0">Neccessary Details</h4>
               </div>
               <div className="card-body">
-                <form action="#">
-                 
+                <form onSubmit={handleSubmit}>
+                  {/* <form action="#"> */}
                   <div className="form-group row">
                     <label className="col-form-label col-md-2">
                       Destination Name <span className="text-danger">*</span>
@@ -141,86 +238,355 @@ const Basicinputs = () => {
                       />
                     </div>
                   </div>
-                  <div className="form-group row">
-                    <label className="col-form-label col-md-2">
-                      Number Of Guest <span className="text-danger">*</span>
-                    </label>
-                    <div className="col-md-10">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={numberOfGuest}
-                        onChange={(e) => setNumberOfGuest(e.target.value)}
-                      />
+
+                  <div className="row">
+                    <div className="col-sm-6">
+                      <div className="form-group row">
+                        <label className="col-form-label col-md-4">
+                          Number Of Guest <span className="text-danger">*</span>
+                        </label>
+                        <div className="col-sm-8">
+                          <input
+                            type="number"
+                            className="form-control"
+                            value={numberOfGuest}
+                            onChange={(e) => setNumberOfGuest(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-sm-6">
+                      <div className="form-group row">
+                        <label className="col-form-label col-md-4">
+                          Adult Count <span className="text-danger">*</span>
+                        </label>
+                        <div className="col-sm-8">
+                          <input
+                            type="number"
+                            className="form-control"
+                            value={adultCount}
+                            onChange={(e) => setAdultCount(e.target.value)}
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div className="form-group row">
-                    <label className="col-form-label col-md-2">
-                      Adult Count <span className="text-danger">*</span>
-                    </label>
-                    <div className="col-md-10">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={adultCount}
-                        onChange={(e) => setAdultCount(e.target.value)}
-                      />
+
+                  <div className="row">
+                    <div className="col-sm-6">
+                      <div className="form-group row">
+                        <label className="col-form-label col-md-4">
+                          Child Without Bed
+                          <span className="text-danger">*</span>
+                        </label>
+                        <div className="col-sm-8">
+                          <input
+                            type="number"
+                            className="form-control"
+                            value={childWithoutBed}
+                            onChange={(e) => setChildWithoutBed(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-sm-6">
+                      <div className="form-group row">
+                        <label className="col-form-label col-md-4">
+                          Child With Bed <span className="text-danger">*</span>
+                        </label>
+                        <div className="col-sm-8">
+                          <input
+                            type="number"
+                            className="form-control"
+                            value={childWithBed}
+                            onChange={(e) => setChildWithBed(e.target.value)}
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div className="form-group row">
-                    <label className="col-form-label col-md-2">
-                      Child Without Bed <span className="text-danger">*</span>
-                    </label>
-                    <div className="col-md-10">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={childWithoutBed}
-                        onChange={(e) => setChildWithoutBed(e.target.value)}
-                      />
-                    </div>
-                  </div>
+
                   {/*
                    http://localhost:8080/app/quotation/forms
                    */}
+
                   <div className="form-group row">
-                    <label className="col-form-label col-md-2">
-                      Child With Bed
-                    </label>
-                    <div className="col-md-10">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={childWithBed}
-                        onChange={(e) => setChildWithBed(e.target.value)}
-                      />
+                    <div className="card-header">
+                      <h4 className="card-title mb-0">Traveller Details</h4>
+                    </div>
+                    <div className="row">
+                      <div className="col-sm-6">
+                        <div className="form-group row">
+                          <label className="col-form-label col-md-4">
+                            Name Of Guest
+                            {/* <span className="text-danger">*</span> */}
+                          </label>
+                          <div className="col-sm-8">
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={nameOfGuest}
+                              onChange={(e) => setNameOfGuest(e.target.value)}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group row">
+                          <label className="col-form-label col-md-4">
+                            Age
+                            {/* <span className="text-danger">*</span> */}
+                          </label>
+                          <div className="col-sm-8">
+                            <input
+                              type="number"
+                              className="form-control"
+                              value={age}
+                              onChange={(e) => setAge(e.target.value)}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {/* 
+                     http://localhost:8080/app/quotation/forms
+                    */}
+                    <div>
+                      {/* {
+            (
+                      <Container className="content">
+                       <div className="row">
+                         <div className="col-sm-12">
+                           <h5 className="mt-3 mb-4 fw-bold">Dynamically add/remove inputs fields reactjs </h5>
+                             
+                              { 
+                              inputList.map( (x,i)=>{
+                                return(
+                                <div className="row mb-3">
+                                   <div class="form-group col-md-4">
+                                   <label >First Name</label>
+                                    <input type="text"  name="firstName" class="form-control"  placeholder="Enter First Name" onChange={ e=>handleinputchange(e,i)} />
+                                 </div>
+                                 <div class="form-group col-md-4">
+                                 <label >Last Name</label>
+                                    <input type="text"  name="lastName" class="form-control"   placeholder="Enter Last Name" onChange={ e=>handleinputchange(e,i) }/>
+                                 </div>
+                                 <div class="form-group col-md-2 mt-4">
+                                 {
+                                    inputList.length!==1 &&
+                                    <button  className="btn btn-danger mx-1" onClick={()=> handleremove(i)}>Remove</button>
+                                 }
+                                 { inputList.length-1===i &&
+                                 <button  className="btn btn-success" onClick={ handleaddclick}>Add More</button>
+                                 }
+                                 </div>
+                              </div>
+                                );
+                               } )} 
+                  
+                                 
+                         </div>
+                       </div>
+                      </Container>
+                    );
+    ); */}
+                    </div>
+
+                    {/* <div>
+                      {otherTraveller && (
+                        <div className="row">
+                          <div className="col-sm-6">
+                            <div className="form-group row">
+                              <label className="col-form-label col-md-4">
+                                Name Of Guest
+                                <span className="text-danger">*</span>
+                              </label>
+                              <div className="col-sm-8">
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={nameOfGuest}
+                                  onChange={(e) =>
+                                    setNameOfGuest(e.target.value)
+                                  }
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-sm-6">
+                            <div className="form-group row">
+                              <label className="col-form-label col-md-4">
+                                Age <span className="text-danger">*</span>
+                              </label>
+                              <div className="col-sm-8">
+                                <input
+                                  type="number"
+                                  className="form-control"
+                                  value={age}
+                                  onChange={(e) => setAge(e.target.value)}
+                                />
+                              
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}                    }
+                    </div> }
+                          {/* <div>
+                            <button
+                              onClick={() => {
+                                setOtherTraveller(true);
+                              }}
+                              // onclick={addDiv}
+                            >
+                              <h2>+</h2>
+                            </button>
+                          </div> */}
+                  </div>
+
+                  {/* 
+
+
+                    
+                    */}
+                  <div className="form-group row">
+                    <div className="card-header">
+                      <h4 className="card-title mb-0">Hotel details</h4>
+                    </div>
+                    {/* <h2 className="col-form-label col-md-2">Hotel details</h2> */}
+                    {/*  */}
+                    <div className="form-group row">
+                      <label className="col-form-label col-md-2">
+                        Hotel Name
+                      </label>
+                      <div className="col-md-10">
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={hotelName}
+                          onChange={(e) => setHotelName(e.target.value)}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="row">
+                      <div className="col-sm-6">
+                        <div className="form-group row">
+                          <label className="col-form-label col-md-4">
+                            Number Of Night
+                            <span className="text-danger">*</span>
+                          </label>
+                          <div className="col-sm-8">
+                            <input
+                              type="number"
+                              className="form-control"
+                              value={numberOfNight}
+                              onChange={(e) => setNumberOfNight(e.target.value)}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group row">
+                          <label className="col-form-label col-md-4">
+                            Room Type <span className="text-danger">*</span>
+                          </label>
+                          <div className="col-sm-8">
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={roomType}
+                              onChange={(e) => setRoomType(e.target.value)}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="row">
+                      <div className="col-sm-6">
+                        <div className="form-group row">
+                          <label className="col-form-label col-md-4">
+                            checkIn
+                            <span className="text-danger">*</span>
+                          </label>
+                          <div className="col-sm-8">
+                            <input
+                              type="number"
+                              className="form-control"
+                              value={checkIn}
+                              onChange={(e) => setCheckIn(e.target.value)}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-group row">
+                          <label className="col-form-label col-md-4">
+                            checkout<span className="text-danger">*</span>
+                          </label>
+                          <div className="col-sm-8">
+                            <input
+                              type="text"
+                              className="form-control"
+                              value={checkout}
+                              onChange={(e) => setCheckout(e.target.value)}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="form-group row">
+                      <label className="col-form-label col-md-2">rating</label>
+                      <div className="col-md-4">
+                        <input
+                          type="number"
+                          className="form-control"
+                          value={rating}
+                          onChange={(e) => setRating(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="form-group row">
+                      <label className="col-form-label col-md-2">
+                        hotelAddress
+                      </label>
+                      <div className="col-md-10">
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={hotelAddress}
+                          onChange={(e) => setHotelAddress(e.target.value)}
+                        />
+                      </div>
                     </div>
                   </div>
                   <div className="form-group row">
-                    <label className="col-form-label col-md-2">
-                      Hotel Detail
-                    </label>
-                    <div className="col-md-10">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={hotelDetail}
-                        onChange={(e) => setHotelDetail(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="form-group row">
-                    <label className="col-form-label col-md-2">
+                    <label className="col-form-label col-md-4">
                       Visa Required
+                      <span className="text-danger">*</span>
                     </label>
-                    <div className="col-md-10">
+                    <div className="col-md-8">
+                      <select
+                        // className="col-md-8"
+                        class="form-select"
+                        aria-label="Default select example"
+                      >
+                        {/* <option selected>Open this select menu</option> */}
+                        <option value="1">true</option>
+                        <option value="2">false</option>
+                        {/* <option value="3">Three</option> */}
+                      </select>
+                    </div>
+                    {/* <div className="col-md-10">
                       <input
                         type="text"
                         className="form-control"
                         value={visaRequired}
                         onChange={(e) => setVisaRequired(e.target.value)}
                       />
-                    </div>
+                    </div> */}
                   </div>
                   <div className="form-group row">
                     <label className="col-form-label col-md-2">
@@ -263,7 +629,21 @@ const Basicinputs = () => {
 
                   <div className="form-group row">
                     <label className="col-form-label col-md-2">
+                      tour<span className="text-danger">*</span>
+                    </label>
+                    <div className="col-md-10">
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={tour}
+                        onChange={(e) => setTour(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div className="form-group row">
+                    <label className="col-form-label col-md-2">
                       Start Date
+                      <span className="text-danger">*</span>
                     </label>
                     <div className="col-md-10">
                       <input
@@ -300,8 +680,23 @@ const Basicinputs = () => {
                       />
                     </div>
                   </div>
+                  {/* <div className="form-group row">
+                    <label className="col-form-label col-md-2">
+                      Airport Transfer
+                    </label>
+                    <div className="col-md-10">
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={airportTransfer}
+                        onChange={(e) => setAirportTransfer(e.target.value)}
+                      />
+                    </div>
+                  </div> */}
                   <div className="form-group row">
-                    <label className="col-form-label col-md-2">amount</label>
+                    <label className="col-form-label col-md-2">
+                      amount <span className="text-danger">*</span>
+                    </label>
                     <div className="col-md-10">
                       <input
                         type="text"
@@ -350,118 +745,8 @@ const Basicinputs = () => {
                     </div>
                   </div>
                   <div className="col-12">
-                    <CustomButton
-                      isBtn
-                      // iconName="fa-solid fa-check"
-                      ClickEvent={handleSubmit}
-                      btnName="Save"
-                    />
+                    <CustomButton isBtn btnName="Save" />
                   </div>
-          
-                  {/* <div className="form-group row">
-                    <label className="col-form-label col-md-2">Type</label>
-                    <div className="col-md-10">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={type}
-                        onChange={(e) => setType(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="form-group row">
-                    <label className="col-form-label col-md-2">
-                      Despcription
-                    </label>
-                    <div className="col-md-10">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={despcription}
-                        onChange={(e) => setdespcription(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="form-group row">
-                    <label className="col-form-label col-md-2">
-                      Specifications
-                    </label>
-                    <div className="col-md-10">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={specifications}
-                        onChange={(e) => setSpecifications(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="form-group row">
-                    <label className="col-form-label col-md-2">Modal Box</label>
-                    <div className="col-md-10">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={modalBox}
-                        onChange={(e) => setModalBox(e.target.value)}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="form-group row">
-                    <label className="col-form-label col-md-2">
-                      Modal Type
-                    </label>
-                    <div className="col-md-10">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={modalType}
-                        onChange={(e) => setModalBox(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="form-group row">
-                    <label className="col-form-label col-md-2">
-                      modal Name
-                    </label>
-                    <div className="col-md-10">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={modalName}
-                        onChange={(e) => setModalName(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div className="form-group row">
-                    <label className="col-form-label col-md-2">
-                      Physical Product
-                    </label>
-                    <div className="col-md-10">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={isPhysicalProduct}
-                        onChange={(e) => setIsPhysicalProduct(e.target.value)}
-                      />
-                    </div>
-                  </div> */}
-                 
-
-                  {/* <div className="form-group row">
-                    <label className="col-form-label col-md-2">
-                      Placeholder
-                    </label>
-                    <div className="col-md-10">
-                      <input
-                        type="text"
-                        className="form-control"
-                        // placeholder="Placeholder"
-                      />
-                    </div>
-                  </div> */}
-
-                
                 </form>
               </div>
             </div>
