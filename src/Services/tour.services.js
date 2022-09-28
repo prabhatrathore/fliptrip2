@@ -9,9 +9,9 @@ export const AddTour = (obj) => {
 };
 
 export const get = (query) => {
-  return axios.get(`${serverUrl}/?${query}`);
+  return axios.get(`${serverUrl}/?${query}`)
 };
-
+ console.log(get,"get");
 export const deleteTour = (id) => {
   return axios.delete(`${serverUrl}/deleteById/${id}`);
 };

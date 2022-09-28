@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { rolesObj } from "../../../utils/roles";
 import {
   AddTour,
@@ -13,6 +13,28 @@ let initialState = {
 };
 import { toastSuccess, toastError } from "../../../utils/toastUtils";
 
+export const tourGet = createAsyncThunk("auth/tourGet", async (payload) => {
+  try {
+    // let { data: res } = await login(payload);
+    // let decodedToken = await jwtDecode(res.token);
+    // localStorage.setItem("AUTH_TOKEN", res.token);
+    // tourGet: async (state, { payload }) => {
+    // console.log(payload, "payload");
+    let { data: response } = await get(payload);
+    if (response) {
+      // console.log(response, "getget");
+      // let e = (state.tourArr = response.data);
+      // console.log(e, "state");
+    }
+    return response;
+    // return state;
+    // },
+  } catch (error) {
+    toastError(error);
+    throw error;
+  }
+});
+
 const tourSlice = createSlice({
   name: "tour",
   initialState: initialState,
@@ -22,21 +44,44 @@ const tourSlice = createSlice({
       //   console.log(payload, "payload");
       let { data: response } = await AddTour(payload);
       if (response) {
-        console.log(response, "respse");
+        // console.log(response, "respse");
         toastSuccess(response.message);
       }
     },
-    tourGet: async (state, { payload }) => {
-      let { data: response } = await get(payload);
-      if (response) {
-        console.log(response, "getget");
-        // toastSuccess(response.message);
-      }
-      state.tourArr = payload;
+    // tourGet: async (state, { payload }) => {
+    //   console.log(payload, "payload");
+    //   let { data: response } = await get(payload);
+    //   if (response) {
+    //     console.log(response, "getget");
+
+    //     state.tourArr = response.data;
+    //     // console.log(e, "state");
+    //   }
+    //   return state;
+    // },
+  },
+  extraReducers: {
+    [tourGet.pending]: (state, action) => {
+      state.loading = true;
+      state.error = false;
+    },
+    [tourGet.fulfilled]: (state, { payload }) => {
+      console.log(payload, "payload2222");
+      state.tourArr = payload.data;
+      // state.role = payload.role;
+      // state.token = payload.token;
+    },
+    [tourGet.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = true;
+      state.token = null;
+      state.role = null;
+      state.user = null;
+      state.isAuthorized = false;
     },
   },
 });
 
-export const { TOURAdd, tourGet } = tourSlice.actions;
+export const { TOURAdd } = tourSlice.actions;
 
 export default tourSlice.reducer;

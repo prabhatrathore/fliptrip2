@@ -11,12 +11,9 @@ let initialState = {
   QuotationArr: [],
   quotationObj: {},
 };
-// import { getDefaultMiddleware } from "@reduxjs/toolkit";
+import { getDefaultMiddleware } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import { toastSuccess, toastError } from "../../../utils/toastUtils";
-
-// const customizedMiddleware = getDefaultMiddleware({
-//   serializableCheck: false,
-// });
 
 const quotationSlice = createSlice({
   name: "quotation",
@@ -25,6 +22,10 @@ const quotationSlice = createSlice({
     quotationAdd: async (state, { payload }) => {
       console.log("quotation");
       state.QuotationArr = payload;
+      console.log(state.QuotationArr, "state.QuotationArr");
+      // payload.errors.fetching = [];
+      // payload.status.isLoading = true;
+      // payload.hasErrors = false;
       console.log(payload, "payload");
       let { data: response } = await AddQuotation(payload);
       if (response) {
