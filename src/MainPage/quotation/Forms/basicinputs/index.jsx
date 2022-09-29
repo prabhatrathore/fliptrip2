@@ -225,7 +225,8 @@ const Basicinputs = () => {
           <div className="col-lg-12">
             <div className="card">
               <div className="card-header">
-                <h3 className="card-title mb-0">Neccessary Details</h3>
+                {/* <h3 className="card-title mb-0">Neccessary Details</h3> */}
+                <h3 className="blue-1 m-0">Neccessary Details</h3>
               </div>
               <div className="card-body">
                 <form onSubmit={handleSubmit}>
@@ -327,7 +328,8 @@ const Basicinputs = () => {
                   <div className="content">
                     <div className="row">
                       <div className="col-sm-12">
-                        <h3 className="mt-3 mb-4 fw-bold">Traveller Details</h3>
+                        <h3 className="mt-3 mb-4 ">Traveller Details</h3>
+                        {/* <h3 className="blue-1 m-0">Traveller Details</h3> */}
                         {inputList.map((x, i) => {
                           return (
                             <div className="row mb-3">
@@ -384,7 +386,7 @@ const Basicinputs = () => {
 
                   <div className="content">
                     {/* <div className="row"> */}
-                    <h3 className="mt-3 mb-4 fw-bold">Hotel details</h3>
+                    <h3 className="mt-3 mb-4 ">Hotel details</h3>
                     {/* <h3 className="card-title mb-0">Hotel details</h3> */}
                     {/* </div> */}
                     {hotelList.map((x, i) => {
@@ -498,7 +500,7 @@ const Basicinputs = () => {
                     <div className="col-md-4" type="radio">
                       <select
                         // type="radio"
-                        class="form-select"
+                        // class="form-select"
                         aria-label="Default select example"
                       >
                         <option value="1">true</option>
@@ -533,7 +535,7 @@ const Basicinputs = () => {
                     </div>
                   </div>
                   <div className="form-group row">
-                    <label className="col-form-label col-md-2">Lead name</label>
+                    <label className="col-form-label col-md-2">Lead Name</label>
                     <div className="col-md-10">
                       <input
                         type="text"
@@ -546,17 +548,17 @@ const Basicinputs = () => {
                   {/*  */}
 
                   <div className="col-12">
-                    <label className="blue-1 fs-12">tour</label>
+                    <label className="blue-1 fs-12">Tour</label>
                     <Select
                       onChange={handleTourValueChange}
                       isMulti
                       options={
                         tourValueArr && tourValueArr.length > 0
                           ? tourValueArr.map((el) => ({
-                              ...el,
-                              label: el.tourName,
-                              value: el._id,
-                            }))
+                            ...el,
+                            label: el.tourName,
+                            value: el._id,
+                          }))
                           : []
                       }
                     />
@@ -635,7 +637,7 @@ const Basicinputs = () => {
                   <div className="content">
                     <div className="row">
                       <div className="col-sm-12">
-                        <h3 className="mt-3 mb-4 fw-bold">Itinerary Details</h3>
+                        <h3 className="mt-3 mb-4">Itinerary Details</h3>
                         {itineraryList.map((x, i) => {
                           return (
                             <div className="row mb-3">
