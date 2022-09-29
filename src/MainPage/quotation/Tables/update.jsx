@@ -3,15 +3,15 @@ import {
   quotationAdd,
   get,
   deleteQuotation,
-  update,
-} from "../../../../redux/features/quotation/quotationSlice";
-import { toastSuccess, toastError } from "../../../../utils/toastUtils";
+  quotationUpdate,
+} from "../../../redux/features/quotation/quotationSlice";
+import { toastSuccess, toastError } from "../../../utils/toastUtils";
 
-import { tourGet } from "../../../../redux/features/tour/tourSlice";
+import { tourGet } from "../../../redux/features/tour/tourSlice";
 import { Helmet } from "react-helmet";
 
 import { useSelector, useDispatch } from "react-redux";
-import CustomButton from "../../../../_components/Utility/Button";
+import CustomButton from "../../../_components/Utility/Button";
 import React, { useState, useEffect, Component } from "react";
 import Select from "react-select";
 
@@ -169,25 +169,7 @@ const Basicinputs = () => {
   // console.log(handleTourValueChange, "handleTourValueChange");
   const handleSubmit = (e) => {
     e.preventDefault();
-    // if (destinationName == "") {
-    //   throw "destinationName name is mandatory";
-    // }
-    // if (numberOfGuest == "") {
-    //   throw "number Of Guest is mandatory";
-    // }
-    // if (adultCount == "") {
-    //   throw "adult Count is mandatory";
-    // }
-    // if (visaRequired == "") {
-    //   throw "visa Required is mandatory";
-    // }
 
-    // if (startDate == "") {
-    //   throw "start Date is mandatory";
-    // }
-    // if (amount == "") {
-    //   throw "amount is mandatory";
-    // }
     let obj = {
       destinationName,
       durationOfTour,
@@ -212,7 +194,7 @@ const Basicinputs = () => {
       tax,
       itineraryList,
     };
-    dispatch(quotationAdd(obj));
+    dispatch(quotationUpdate(obj));
     console.log(obj, "send Obj9");
   };
   const options = [
@@ -338,8 +320,8 @@ const Basicinputs = () => {
                     </div>
                   </div>
                   {/*
-                   http://localhost:8080/app/quotation/forms
-                   */}
+                     http://localhost:8080/app/quotation/forms
+                     */}
                   <div className="content">
                     <div className="row">
                       <div className="col-sm-12">
@@ -396,8 +378,8 @@ const Basicinputs = () => {
                   </div>
 
                   {/* 
-                     http://localhost:8080/app/quotation/forms
-                    */}
+                       http://localhost:8080/app/quotation/forms
+                      */}
 
                   <div className="content">
                     {/* <div className="row"> */}
@@ -504,12 +486,12 @@ const Basicinputs = () => {
                     })}
                   </div>
                   {/*
-                   http://localhost:8080/app/quotation/forms
-                   
-                   */}
+                     http://localhost:8080/app/quotation/forms
+                     
+                     */}
                   {/* 
-                   
-                   */}
+                     
+                     */}
                   <div className="form-group row">
                     <label className="col-form-label col-md-4">
                       Visa Required
@@ -526,8 +508,8 @@ const Basicinputs = () => {
                     </div>
                   </div>
                   {/* 
-
-                   */}
+  
+                     */}
                   <div className="form-group row">
                     <label className="col-form-label col-md-2">
                       Visa On Arrival
@@ -618,8 +600,8 @@ const Basicinputs = () => {
                     </div>
                   </div>
                   {/* 
-                  
-                  */}
+                    
+                    */}
                   <div className="row">
                     <div className="col-sm-6">
                       <div className="form-group row">
@@ -652,8 +634,8 @@ const Basicinputs = () => {
                   </div>
                   {/*  */}
                   {/*
-                   http://localhost:8080/app/quotation/forms
-                   */}
+                     http://localhost:8080/app/quotation/forms
+                     */}
                   <div className="content">
                     <div className="row">
                       <div className="col-sm-12">
@@ -741,3 +723,4 @@ const Basicinputs = () => {
   );
 };
 export default Basicinputs;
+//

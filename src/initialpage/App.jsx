@@ -20,6 +20,7 @@ import DefaultLayout from "./Sidebar/DefaultLayout";
 import Emaillayout from "./Sidebar/emaillayout";
 import Settinglayout from "./Sidebar/Settinglayout";
 import Tasklayout from "./Sidebar/tasklayout";
+// import "http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css";
 import Quotation from "../_components/quotation/Quotation";
 // {
 //     if (location.pathname.includes("login") || location.pathname.includes("register") || location.pathname.includes("forgotpassword") || location.pathname.includes("otp") || location.pathname.includes("lockscreen")) {

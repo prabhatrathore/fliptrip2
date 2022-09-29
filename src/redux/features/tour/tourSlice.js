@@ -19,10 +19,10 @@ export const tourGet = createAsyncThunk("auth/tourGet", async (payload) => {
     // let decodedToken = await jwtDecode(res.token);
     // localStorage.setItem("AUTH_TOKEN", res.token);
     // tourGet: async (state, { payload }) => {
-    // console.log(payload, "payload");
+    console.log(payload, "payload");
     let { data: response } = await get(payload);
     if (response) {
-      // console.log(response, "getget");
+      console.log(response, "getget");
       // let e = (state.tourArr = response.data);
       // console.log(e, "state");
     }
@@ -48,17 +48,7 @@ const tourSlice = createSlice({
         toastSuccess(response.message);
       }
     },
-    // tourGet: async (state, { payload }) => {
-    //   console.log(payload, "payload");
-    //   let { data: response } = await get(payload);
-    //   if (response) {
-    //     console.log(response, "getget");
 
-    //     state.tourArr = response.data;
-    //     // console.log(e, "state");
-    //   }
-    //   return state;
-    // },
   },
   extraReducers: {
     [tourGet.pending]: (state, action) => {
@@ -68,15 +58,11 @@ const tourSlice = createSlice({
     [tourGet.fulfilled]: (state, { payload }) => {
       console.log(payload, "payload2222");
       state.tourArr = payload.data;
-      // state.role = payload.role;
-      // state.token = payload.token;
     },
     [tourGet.rejected]: (state, action) => {
       state.loading = false;
       state.error = true;
       state.token = null;
-      state.role = null;
-      state.user = null;
       state.isAuthorized = false;
     },
   },

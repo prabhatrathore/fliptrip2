@@ -73,7 +73,7 @@ Version      : 3.6
 64. Responsive
 
 ========================================*/
-
+@import "http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css";
 @font-face {
 	font-family: 'Material Icons';
 	font-style: normal;
