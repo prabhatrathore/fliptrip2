@@ -6,7 +6,8 @@ import Forms from "./Forms";
 
 const tourroute = ({ match }) => (
   <Switch>
-    {/* <Redirect exact from={`${match.url}/`} to={`${match.url}/basic`} /> */}
+    {/* match.url ==app/tour */}
+    <Redirect exact from={`${match.url}/`} to={`${match.url}/forms`} />
     <Route path={`${match.url}/forms`} component={Forms} />
     {/* app/tour/forms/ */}
     {/* <Route path={`${match.url}/tables`} component={Tables} /> */}

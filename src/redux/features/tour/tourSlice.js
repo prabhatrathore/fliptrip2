@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { rolesObj } from "../../../utils/roles";
+// import { rolesObj } from "../../../utils/roles";
 import {
   AddTour,
   get,
-  deleteTour,
+  tourDelete,
   update,
 } from "../../../Services/tour.services";
 
@@ -19,7 +19,7 @@ export const tourGet = createAsyncThunk("auth/tourGet", async (payload) => {
     // let decodedToken = await jwtDecode(res.token);
     // localStorage.setItem("AUTH_TOKEN", res.token);
     // tourGet: async (state, { payload }) => {
-    console.log(payload, "payload");
+    // console.log(payload, "payload");
     let { data: response } = await get(payload);
     if (response) {
       console.log(response, "getget");
@@ -48,7 +48,28 @@ const tourSlice = createSlice({
         toastSuccess(response.message);
       }
     },
+    setObj: (state, { payload }) => {
+      // console.log(payload, "setobj3");
+      state.tourObj = payload;
+      // console.log(state, "state7");
+    },
+    tourUpdate: async (state, { payload }) => {
+      // state.quotationObj = payload;
+      // console.log(payload, "payload");
 
+      let { data: response } = await update(payload, payload.id);
+      if (response) {
+        toastSuccess(response.message);
+      }
+    },
+    deleteTour: async (state, { payload }) => {
+      // console.log(payload, "payload-dele");
+      let { data: response } = await tourDelete(payload);
+      // console.log(response, "response-dele");
+      if (response) {
+        toastSuccess(response.message);
+      }
+    },
   },
   extraReducers: {
     [tourGet.pending]: (state, action) => {
@@ -68,6 +89,6 @@ const tourSlice = createSlice({
   },
 });
 
-export const { TOURAdd } = tourSlice.actions;
+export const { TOURAdd, tourUpdate, setObj, deleteTour } = tourSlice.actions;
 
 export default tourSlice.reducer;

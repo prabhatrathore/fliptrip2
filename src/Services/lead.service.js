@@ -18,3 +18,10 @@ export const updateLeadStatus = (id, obj) => {
 export const assignLeadToagent = (id, obj) => {
   return axios.patch(`${serverUrl}/assignLeadToAgent/${id}`, obj);
 };
+
+export const getAllLead = (query) => {
+  // console.log(query, "query");
+  return axios.get(`${serverUrl}/get?${query}`);
+};
+
+// console.log(getAllLead, "getall ");

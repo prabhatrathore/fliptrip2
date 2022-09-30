@@ -8,6 +8,7 @@ import {
 import { toastSuccess, toastError } from "../../../../utils/toastUtils";
 
 import { tourGet } from "../../../../redux/features/tour/tourSlice";
+import { leadGet } from "../../../../redux/features/lead/leadSlice";
 import { Helmet } from "react-helmet";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -40,7 +41,11 @@ const Basicinputs = () => {
   const [airportTransfer, setAirportTransfer] = useState("");
   const [inputList, setinputList] = useState([{ guestName: "", age: "" }]);
   const [selectedTourIdArr, setSelectedTourIdArr] = useState([]);
-  console.log(visaRequired, "visaRequired");
+
+  const [selectedLeadIdArr, setSelectedLeadIdArr] = useState([]);
+
+  // console.log(visaRequired, "visaRequired");
+  console.log(selectedTourIdArr, "selectedTourIdArr");
   const handleinputchange = (e, index) => {
     const { name, value } = e.target;
     if (name == "age") {
@@ -96,8 +101,8 @@ const Basicinputs = () => {
         toastError("check-Out wil be greater than checkin ");
       }
     }
-    console.log(Date.parse(list[0].checkOut), "Date.parse(list.checkout)");
-    console.log(Date.parse(list[0].checkIn), "Date.parse(list.checkIn)");
+    // console.log(Date.parse(list[0].checkOut), "Date.parse(list.checkout)");
+    // console.log(Date.parse(list[0].checkIn), "Date.parse(list.checkIn)");
     list[index][name] = value;
     setHotelList(list);
   };
@@ -155,6 +160,18 @@ const Basicinputs = () => {
   };
   //tour
   useEffect(() => {
+    dispatch(leadGet());
+  }, []);
+
+  const leadValueArr = useSelector((state) => state.lead.leadArr);
+  console.log(leadValueArr, "leadValueArr");
+
+  const handleLeadValueChange = (e) => {
+    setSelectedLeadIdArr(e);
+    console.log(e, "lead");
+  };
+
+  useEffect(() => {
     dispatch(tourGet());
   }, []);
 
@@ -165,7 +182,7 @@ const Basicinputs = () => {
     setSelectedTourIdArr(e);
     console.log(e, "eeee");
   };
-  console.log(selectedTourIdArr, "selectedTourIdArr");
+  // console.log(selectedTourIdArr, "selectedTourIdArr");
   // console.log(handleTourValueChange, "handleTourValueChange");
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -554,7 +571,7 @@ const Basicinputs = () => {
                       />
                     </div>
                   </div>
-                  <div className="form-group row">
+                  {/* <div className="form-group row">
                     <label className="col-form-label col-md-2">Lead Name</label>
                     <div className="col-md-10">
                       <input
@@ -564,9 +581,25 @@ const Basicinputs = () => {
                         onChange={(e) => setLeadId(e.target.value)}
                       />
                     </div>
-                  </div>
+                  </div> */}
                   {/*  */}
 
+                  <div className="col-12">
+                    <label className="blue-1 fs-12">Lead Name</label>
+                    <Select
+                      onChange={handleLeadValueChange}
+                      isMulti
+                      options={
+                        leadValueArr && leadValueArr.length > 0
+                          ? leadValueArr.map((el) => ({
+                              ...el,
+                              label: el.leadName,
+                              value: el._id,
+                            }))
+                          : []
+                      }
+                    />
+                  </div>
                   <div className="col-12">
                     <label className="blue-1 fs-12">Tour</label>
                     <Select

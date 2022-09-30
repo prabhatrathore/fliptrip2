@@ -28,7 +28,9 @@ const Forms = ({ match }) => (
     <Redirect exact from={`${match.url}/`} to={`${match.url}/basicinputs`} />
     <Route path={`${match.url}/basicinputs`} component={Basicinputs} />
     {/* <Route path={`${match.url}/updateInput`} component={updateInput} /> */}
-    {/*  */}
+    {/* 
+    
+    */}
     {/*<Route path={`${match.url}/horizontalform`} component={HorizontalForm} />
     <Route path={`${match.url}/verticalform`} component={VerticalForm} />
     <Route path={`${match.url}/formmask`} component={Formmask} />

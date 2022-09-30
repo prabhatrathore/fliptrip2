@@ -94,7 +94,7 @@ function Quotation() {
                 </div>
               </div>
               {quotationArr && quotationArr.length > 0 && (
-                <DashboardTable>
+                <DashboardTable className="mt-5 pt-5 offset-1">
                   <DataTable
                     columns={QUOTATION_columns}
                     data={quotationArr}

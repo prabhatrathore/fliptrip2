@@ -12,7 +12,7 @@ export const get = (query) => {
   return axios.get(`${serverUrl}/?${query}`)
 };
  console.log(get,"get");
-export const deleteTour = (id) => {
+export const tourDelete = (id) => {
   return axios.delete(`${serverUrl}/deleteById/${id}`);
 };
 

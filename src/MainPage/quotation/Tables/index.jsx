@@ -20,10 +20,10 @@ const Forms = ({ match }) => (
     {/*  http://localhost:8080/app/quotation/table */}
     <Redirect exact from={`${match.url}/`} to={`${match.url}/quotation`} />
     <Route path={`${match.url}/quotation`} component={quotation} />
-
+    {/* app/quotation/table/update */}
     <Redirect exact from={`${match.url}/update`} to={`${match.url}/edit`} />
     <Route path={`${match.url}/edit`} component={update} />
-   
+
     {/* http://localhost:8080/app/quotation/forms/basicinputs */}
     {/* <Redirect exact from={`${match.url}/`} to={`${match.url}/basicinputs`} />
     <Route path={`${match.url}/basicinputs`} component={Basicinputs} /> */}

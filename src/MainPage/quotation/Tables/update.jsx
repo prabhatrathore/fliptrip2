@@ -3,7 +3,7 @@ import {
   quotationAdd,
   get,
   deleteQuotation,
-  quotationUpdate,
+  quotationUpdateObj,
 } from "../../../redux/features/quotation/quotationSlice";
 import { toastSuccess, toastError } from "../../../utils/toastUtils";
 
@@ -40,7 +40,35 @@ const Basicinputs = () => {
   const [airportTransfer, setAirportTransfer] = useState("");
   const [inputList, setinputList] = useState([{ guestName: "", age: "" }]);
   const [selectedTourIdArr, setSelectedTourIdArr] = useState([]);
+  const [selectedQuotationId, setselectedQuotationId] = useState("");
+
   console.log(visaRequired, "visaRequired");
+
+  const quotationObj = useSelector((state) => state.quotation.quotationObj);
+  console.log(quotationObj, "quotationobj3");
+  useEffect(() => {
+    if (quotationObj) {
+      setselectedQuotationId(quotationObj._id);
+      setDestinationName(quotationObj.destinationName);
+      setDurationOfTour(quotationObj.durationOfTour);
+      setNumberOfGuest(quotationObj.numberOfGuest);
+      setAdultCount(quotationObj.adultCount);
+      setChildWithoutBed(quotationObj.childWithoutBed);
+      setVisaRequired(quotationObj.visaRequired);
+      setLeadId(quotationObj.leadId);
+      setStartDate(quotationObj.startDate);
+      setExpirationDate(quotationObj.expirationDate);
+      setTermAndCondition(quotationObj.termAndCondition);
+      setAmount(quotationObj.amount);
+      setTax(quotationObj.tax);
+      setAirportTransfer(quotationObj.airportTransfer);
+      setSelectedTourIdArr(quotationObj.selectedTourIdArr);
+    }
+    // return () => {
+    //   dispatch(SetquotationObj(null));
+    // };
+  }, [quotationObj]);
+
   const handleinputchange = (e, index) => {
     const { name, value } = e.target;
     if (name == "age") {
@@ -167,10 +195,20 @@ const Basicinputs = () => {
   };
   console.log(selectedTourIdArr, "selectedTourIdArr");
   // console.log(handleTourValueChange, "handleTourValueChange");
+  function tourArr(selectedTourIdArr) {
+    if (selectedTourIdArr) {
+      selectedTourIdArr.map((el) => ({
+        tourName: el.tourName,
+        description: el.description,
+      }));
+      return selectedTourIdArr;
+    }
+  }
   const handleSubmit = (e) => {
     e.preventDefault();
 
     let obj = {
+      id: selectedQuotationId,
       destinationName,
       durationOfTour,
       numberOfGuest,
@@ -182,10 +220,7 @@ const Basicinputs = () => {
       visaRequired,
       visaOnArrival,
       airportTransfer,
-      tourValueArr: selectedTourIdArr.map((el) => ({
-        tourName: el.tourName,
-        description: el.description,
-      })),
+      tourValueArr: tourArr(selectedTourIdArr),
       leadId,
       startDate,
       expirationDate,
@@ -194,8 +229,8 @@ const Basicinputs = () => {
       tax,
       itineraryList,
     };
-    dispatch(quotationUpdate(obj));
-    console.log(obj, "send Obj9");
+    dispatch(quotationUpdateObj(obj, selectedQuotationId));
+    console.log(obj, selectedQuotationId, "send Obj9");
   };
   const options = [
     { value: "true", label: "true" },
@@ -327,52 +362,53 @@ const Basicinputs = () => {
                       <div className="col-sm-12">
                         <h3 className="mt-3 mb-4 ">Traveller Details</h3>
                         {/* <h3 className="blue-1 m-0">Traveller Details</h3> */}
-                        {inputList.map((x, i) => {
-                          return (
-                            <div className="row mb-3">
-                              <div class="form-group col-md-4">
-                                <label>Guest Name</label>
-                                <input
-                                  type="text"
-                                  name="guestName"
-                                  class="form-control"
-                                  placeholder="Enter Name"
-                                  onChange={(e) => handleinputchange(e, i)}
-                                />
+                        {inputList &&
+                          inputList.map((x, i) => {
+                            return (
+                              <div className="row mb-3">
+                                <div class="form-group col-md-4">
+                                  <label>Guest Name</label>
+                                  <input
+                                    type="text"
+                                    name="guestName"
+                                    class="form-control"
+                                    placeholder="Enter Name"
+                                    onChange={(e) => handleinputchange(e, i)}
+                                  />
+                                </div>
+                                <div class="form-group col-md-4">
+                                  <label>age</label>
+                                  <input
+                                    type="number"
+                                    name="age"
+                                    class="form-control"
+                                    placeholder="Enter Age"
+                                    onChange={(e) => handleinputchange(e, i)}
+                                  />
+                                </div>
+                                <div class="form-group col-md-2 mt-4">
+                                  {inputList.length !== 1 && (
+                                    <button
+                                      type="button"
+                                      // className="btn btn-success"
+                                      className="btn btn-danger mx-1"
+                                      onClick={() => handleremove(i)}
+                                    >
+                                      Remove
+                                    </button>
+                                  )}
+                                  {inputList.length - 1 === i && (
+                                    <button
+                                      className="btn btn-success"
+                                      onClick={handleaddclick}
+                                    >
+                                      Add More
+                                    </button>
+                                  )}
+                                </div>
                               </div>
-                              <div class="form-group col-md-4">
-                                <label>age</label>
-                                <input
-                                  type="number"
-                                  name="age"
-                                  class="form-control"
-                                  placeholder="Enter Age"
-                                  onChange={(e) => handleinputchange(e, i)}
-                                />
-                              </div>
-                              <div class="form-group col-md-2 mt-4">
-                                {inputList.length !== 1 && (
-                                  <button
-                                    type="button"
-                                    // className="btn btn-success"
-                                    className="btn btn-danger mx-1"
-                                    onClick={() => handleremove(i)}
-                                  >
-                                    Remove
-                                  </button>
-                                )}
-                                {inputList.length - 1 === i && (
-                                  <button
-                                    className="btn btn-success"
-                                    onClick={handleaddclick}
-                                  >
-                                    Add More
-                                  </button>
-                                )}
-                              </div>
-                            </div>
-                          );
-                        })}
+                            );
+                          })}
                       </div>
                     </div>
                   </div>
@@ -386,104 +422,105 @@ const Basicinputs = () => {
                     <h3 className="mt-3 mb-4 ">Hotel details</h3>
                     {/* <h3 className="card-title mb-0">Hotel details</h3> */}
                     {/* </div> */}
-                    {hotelList.map((x, i) => {
-                      return (
-                        <div className="row mb-3">
-                          <div class="form-group col-md-4">
-                            <label>Hotel Name</label>
-                            <input
-                              type="text"
-                              name="hotelName"
-                              class="form-control"
-                              placeholder="Name"
-                              onChange={(e) => handleinputchangeHotel(e, i)}
-                            />
-                          </div>
+                    {hotelList &&
+                      hotelList.map((x, i) => {
+                        return (
+                          <div className="row mb-3">
+                            <div class="form-group col-md-4">
+                              <label>Hotel Name</label>
+                              <input
+                                type="text"
+                                name="hotelName"
+                                class="form-control"
+                                placeholder="Name"
+                                onChange={(e) => handleinputchangeHotel(e, i)}
+                              />
+                            </div>
 
-                          <div class="form-group col-md-4">
-                            <label> Number Of Night</label>
-                            <input
-                              type="number"
-                              name="numberOfNight"
-                              class="form-control"
-                              onChange={(e) => handleinputchangeHotel(e, i)}
-                            />
-                          </div>
+                            <div class="form-group col-md-4">
+                              <label> Number Of Night</label>
+                              <input
+                                type="number"
+                                name="numberOfNight"
+                                class="form-control"
+                                onChange={(e) => handleinputchangeHotel(e, i)}
+                              />
+                            </div>
 
-                          <div class="form-group col-md-4">
-                            <label> Room Type</label>
-                            <input
-                              type="text"
-                              name="roomType"
-                              class="form-control"
-                              onChange={(e) => handleinputchangeHotel(e, i)}
-                            />
-                          </div>
-                          <div class="form-group col-md-4">
-                            <label> Check In</label>
-                            <input
-                              type="date"
-                              // type="text"
-                              name="checkIn"
-                              class="form-control"
-                              onChange={(e) => handleinputchangeHotel(e, i)}
-                            />
-                          </div>
+                            <div class="form-group col-md-4">
+                              <label> Room Type</label>
+                              <input
+                                type="text"
+                                name="roomType"
+                                class="form-control"
+                                onChange={(e) => handleinputchangeHotel(e, i)}
+                              />
+                            </div>
+                            <div class="form-group col-md-4">
+                              <label> Check In</label>
+                              <input
+                                type="date"
+                                // type="text"
+                                name="checkIn"
+                                class="form-control"
+                                onChange={(e) => handleinputchangeHotel(e, i)}
+                              />
+                            </div>
 
-                          <div class="form-group col-md-4">
-                            <label> Check Out</label>
-                            <input
-                              type="date"
-                              // type="text"
-                              name="checkOut"
-                              class="form-control"
-                              onChange={(e) => handleinputchangeHotel(e, i)}
-                            />
-                          </div>
+                            <div class="form-group col-md-4">
+                              <label> Check Out</label>
+                              <input
+                                type="date"
+                                // type="text"
+                                name="checkOut"
+                                class="form-control"
+                                onChange={(e) => handleinputchangeHotel(e, i)}
+                              />
+                            </div>
 
-                          <div class="form-group col-md-4">
-                            <label>rating</label>
-                            <input
-                              type="number"
-                              name="rating"
-                              class="form-control"
-                              onChange={(e) => handleinputchangeHotel(e, i)}
-                            />
-                          </div>
+                            <div class="form-group col-md-4">
+                              <label>rating</label>
+                              <input
+                                type="number"
+                                name="rating"
+                                class="form-control"
+                                onChange={(e) => handleinputchangeHotel(e, i)}
+                              />
+                            </div>
 
-                          <div class="form-group col-md-4">
-                            <label>Hotel Address</label>
-                            <input
-                              type="text"
-                              name="hotelAddress"
-                              class="form-control"
-                              onChange={(e) => handleinputchangeHotel(e, i)}
-                            />
-                          </div>
+                            <div class="form-group col-md-4">
+                              <label>Hotel Address</label>
+                              <input
+                                type="text"
+                                name="hotelAddress"
+                                class="form-control"
+                                onChange={(e) => handleinputchangeHotel(e, i)}
+                              />
+                            </div>
 
-                          <div class="form-group col-md-2 mt-4">
-                            {hotelList.length !== 1 && (
-                              <button
-                                type="button"
-                                // className="btn btn-success"
-                                className="btn btn-danger mx-1"
-                                onClick={() => handleremoveHotel(i)}
-                              >
-                                Remove
-                              </button>
-                            )}
-                            {hotelList.length - 1 === i && (
-                              <button
-                                className="btn btn-success"
-                                onClick={handleaddclickHotel}
-                              >
-                                Add More
-                              </button>
-                            )}
+                            <div class="form-group col-md-2 mt-4">
+                              {hotelList.length !== 1 && (
+                                <button
+                                  type="button"
+                                  // className="btn btn-success"
+                                  className="btn btn-danger mx-1"
+                                  onClick={() => handleremoveHotel(i)}
+                                >
+                                  Remove
+                                </button>
+                              )}
+                              {hotelList.length - 1 === i && (
+                                <button
+                                  className="btn btn-success"
+                                  onClick={handleaddclickHotel}
+                                >
+                                  Add More
+                                </button>
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
                   </div>
                   {/*
                      http://localhost:8080/app/quotation/forms
@@ -640,57 +677,58 @@ const Basicinputs = () => {
                     <div className="row">
                       <div className="col-sm-12">
                         <h3 className="mt-3 mb-4">Itinerary Details</h3>
-                        {itineraryList.map((x, i) => {
-                          return (
-                            <div className="row mb-3">
-                              <div class="form-group col-md-4">
-                                <label>Itinerary Name</label>
-                                <input
-                                  type="text"
-                                  name="itineraryName"
-                                  class="form-control"
-                                  placeholder="Enter Itinerary Name"
-                                  onChange={(e) =>
-                                    handleinputchangeItinerary(e, i)
-                                  }
-                                />
-                              </div>
-                              <div class="form-group col-md-4">
-                                <label>Day </label>
-                                <input
-                                  type="number"
-                                  name="day"
-                                  class="form-control"
-                                  onChange={(e) =>
-                                    handleinputchangeItinerary(e, i)
-                                  }
-                                />
-                              </div>
+                        {itineraryList &&
+                          itineraryList.map((x, i) => {
+                            return (
+                              <div className="row mb-3">
+                                <div class="form-group col-md-4">
+                                  <label>Itinerary Name</label>
+                                  <input
+                                    type="text"
+                                    name="itineraryName"
+                                    class="form-control"
+                                    placeholder="Enter Itinerary Name"
+                                    onChange={(e) =>
+                                      handleinputchangeItinerary(e, i)
+                                    }
+                                  />
+                                </div>
+                                <div class="form-group col-md-4">
+                                  <label>Day </label>
+                                  <input
+                                    type="number"
+                                    name="day"
+                                    class="form-control"
+                                    onChange={(e) =>
+                                      handleinputchangeItinerary(e, i)
+                                    }
+                                  />
+                                </div>
 
-                              <div class="form-group col-md-2 mt-4">
-                                {itineraryList.length !== 1 && (
-                                  <button
-                                    type="button"
-                                    className="btn btn-danger"
-                                    // className="btn btn-success"
-                                    onClick={() => handleremoveItinerary(i)}
-                                  >
-                                    Remove
-                                  </button>
-                                )}
-                                {itineraryList.length - 1 === i && (
-                                  <button
-                                    type="button"
-                                    className="btn btn-success"
-                                    onClick={handleaddclickItinerary}
-                                  >
-                                    Add More
-                                  </button>
-                                )}
+                                <div class="form-group col-md-2 mt-4">
+                                  {itineraryList.length !== 1 && (
+                                    <button
+                                      type="button"
+                                      className="btn btn-danger"
+                                      // className="btn btn-success"
+                                      onClick={() => handleremoveItinerary(i)}
+                                    >
+                                      Remove
+                                    </button>
+                                  )}
+                                  {itineraryList.length - 1 === i && (
+                                    <button
+                                      type="button"
+                                      className="btn btn-success"
+                                      onClick={handleaddclickItinerary}
+                                    >
+                                      Add More
+                                    </button>
+                                  )}
+                                </div>
                               </div>
-                            </div>
-                          );
-                        })}
+                            );
+                          })}
                       </div>
                     </div>
                   </div>

@@ -1,19 +1,23 @@
-/**
- * Forms Routes
- */
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import Basicinputs from "./basicinputs";
-//  import Inputgrp from "./Inputgroups"
-//  import HorizontalForm from "./HorizontalForm"
-//  import VerticalForm from "./VerticalForm"
-//  import Formmask from "./Formmask"
-//  import Formvalidation from "./Formvalidation"
 
+import tourDetails from "./basicinputs/index";
+import FormData from "./basicinputs/FormData";
+// import Quotation from "./basicinputs/Tour";
+//  import Inputgrp from "./Inputgroups"
+
+// http://localhost:8080/app/tour/forms
 const Forms = ({ match }) => (
   <Switch>
     <Redirect exact from={`${match.url}/`} to={`${match.url}/details`} />
-    <Route path={`${match.url}/details`} component={Basicinputs} />
+    {/* <Route path={`${match.url}/details`} component={Basicinputs} /> */}
+    <Route path={`${match.url}/details`} component={tourDetails} />
+
+    <Redirect exact from={`${match.url}/create`} to={`${match.url}/add`} />
+    <Route path={`${match.url}/add`} component={FormData} />
+
+    <Redirect exact from={`${match.url}/update`} to={`${match.url}/edit`} />
+    <Route path={`${match.url}/edit`} component={FormData} />
 
     {/* <Redirect exact from={`${match.url}/`} to={`${match.url}`} />
     <Route path={`${match.url}`} component={Basicinputs} /> */}

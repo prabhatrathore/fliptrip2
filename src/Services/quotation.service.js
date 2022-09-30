@@ -17,5 +17,6 @@ export const deleteQuotation = (id) => {
 };
 
 export const update = (formData, id) => {
+  console.log(formData, id,"dbcall update")
   return axios.patch(`${serverUrl}/updateById/${id}`, formData);
 };
