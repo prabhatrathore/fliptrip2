@@ -1,23 +1,24 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   AddUser,
-  getAllLead,
-  deleteLead,
+  getAllClient,
+  deleteUser,
   update,
-} from "../../../Services/lead.service";
+  getAllLeadName,
+} from "../../../Services/user.service";
 
 let initialState = {
-  leadArr: [],
-  leadObj: {},
+  userArr: [],
+  userObj: {},
 };
 
 import { toastSuccess, toastError } from "../../../utils/toastUtils";
 
-export const leadGet = createAsyncThunk("auth/leadGet", async (payload) => {
+export const userGet = createAsyncThunk("auth/userGet", async (payload) => {
   try {
-    console.log(payload, "payload-lead-get");
-    let { data: response } = await getAllLead(payload);
-    console.log(response, "lead-get");
+    // console.log(payload, "payload-lead-get");//undeifuned
+    let { data: response } = await getAllLeadName(payload);
+    console.log(response, "User-gt");
     return response;
   } catch (error) {
     toastError(error);
@@ -25,21 +26,21 @@ export const leadGet = createAsyncThunk("auth/leadGet", async (payload) => {
   }
 });
 
-const leadSlice = createSlice({
-  name: "lead",
+const userSlice = createSlice({
+  name: "user",
   initialState: initialState,
   reducers: {
-    leadAdd: async (state, { payload }) => {
-      state.leadArr = payload;
+    userAdd: async (state, { payload }) => {
+      state.userArr = payload;
 
-      let { data: response } = await AddLead(payload);
+      let { data: response } = await AddUser(payload);
       if (response) {
         console.log(response, "resp1");
         toastSuccess(response.message);
       }
     },
-    leadDelete: async (state, { payload }) => {
-      let { data: response } = await deleteLead(payload);
+    userDelete: async (state, { payload }) => {
+      let { data: response } = await deleteUser(payload);
       // console.log(response, "response-dele");
       if (response) {
         toastSuccess(response.message);
@@ -47,13 +48,10 @@ const leadSlice = createSlice({
     },
     setObj: (state, { payload }) => {
       // console.log(payload, "payload3");
-      state.quotationObj = payload;
+      state.userObj = payload;
       // console.log(state, "state7");
     },
-    leadUpdateObj: async (state, { payload }) => {
-      // state.quotationObj = payload;
-      // console.log(payload, "payload");
-
+    userUpdateObj: async (state, { payload }) => {
       let { data: response } = await update(payload, payload.id);
       if (response) {
         toastSuccess(response.message);
@@ -62,15 +60,15 @@ const leadSlice = createSlice({
   },
 
   extraReducers: {
-    [leadGet.pending]: (state, action) => {
+    [userGet.pending]: (state, action) => {
       state.loading = true;
       state.error = false;
     },
-    [leadGet.fulfilled]: (state, { payload }) => {
-      //   console.log(payload, "payload12-lead");
-      state.leadArr = payload.data;
+    [userGet.fulfilled]: (state, { payload }) => {
+      console.log(payload, "payload12-lead");
+      state.userArr = payload.data;
     },
-    [leadGet.rejected]: (state, action) => {
+    [userGet.rejected]: (state, action) => {
       state.loading = false;
       state.error = true;
       state.isAuthorized = false;
@@ -78,6 +76,6 @@ const leadSlice = createSlice({
   },
 });
 
-export const { leadAdd, leadDelete, setObj, leadUpdateObj } = leadSlice.actions;
+export const { userAdd, userDelete, setObj, userUpdateObj } = userSlice.actions;
 
-export default leadSlice.reducer;
+export default userSlice.reducer;

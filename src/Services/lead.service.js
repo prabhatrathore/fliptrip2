@@ -25,3 +25,7 @@ export const getAllLead = (query) => {
 };
 
 // console.log(getAllLead, "getall ");
+export const getAllLeadName = (query) => {
+  // console.log(query, "query");
+  return axios.get(`${serverUrl}/getAllLeadName?${query}`);
+};

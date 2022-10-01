@@ -9,6 +9,8 @@ import {
 let initialState = {
   quotationArr: [],
   quotationObj: {},
+  quotaionAddLoading: {},
+  quotaionAddError: {},
 };
 
 import { toastSuccess, toastError } from "../../../utils/toastUtils";
@@ -27,48 +29,23 @@ export const quotationGet = createAsyncThunk(
     }
   }
 );
-// export const quotationUpdate = createSlice(
-//   "auth/quotationUpdate",
-//   async (payload) => {
-//     try {
-//       // console.log(payload,"payloadpayload21")
-//       let { data: response } = await update(payload);
+export const quotationAdd = createAsyncThunk(
+  "auth/quotationAdd",
+  async (payload) => {
+    try {
+      console.log(payload, "payloadpayload21");
+      let { data: response } = await AddQuotation(payload);
+      console.log(response, "responsess2");
+      toastSuccess(response.message);
+      return response;
+    } catch (error) {
+      toastError(error);
+      throw error;
+    }
+  }
+);
 
-//       console.log(response, "responses323");
-//       return response;
-//     } catch (error) {
-//       toastError(error);
-//       throw error;
-//     }
-//   }
-// );
-
-// export const setObj = createSlice({
-//   name: "quotation",
-//   initialState: initialState,
-//   reducers: {
-//     setObj4: (state, { payload }) => {
-//       state.quotationObj = payload;
-//       console.log(state, "state7");
-//     },
-//     // quotationUpdateObj: async (state, { payload }) => {
-//     //   // state.quotationObj = payload;
-
-//     //   let { data: response } = await update(payload);
-//     //   if (response) {
-//     //     console.log(response, "respse83");
-//     //     toastSuccess(response.message);
-//     //   }
-//     // },
-//   },
-// });
-// export const setObj = (state, { payload }) => {
-//   console.log(payload, "payload3");
-//   state.quotationObj = payload;
-//   console.log(state, "state7");
-// };
-
-// export const quotationUpdate = createSlice({
+// export const quotationAdd = createSlice({
 //   name: "quotationObj",
 //   initialState: initialState,
 //   reducers: {
@@ -77,7 +54,7 @@ export const quotationGet = createAsyncThunk(
 //       state.quotationObj = payload;
 //       console.log(state, "state7");
 //     },
-//     quotationUpdateObj: async (state, { payload }) => {
+//     quotationAddObj: async (state, { payload }) => {
 //       // state.quotationObj = payload;
 
 //       let { data: response } = await update(payload);
@@ -107,17 +84,17 @@ const quotationSlice = createSlice({
   name: "quotation",
   initialState: initialState,
   reducers: {
-    quotationAdd: async (state, { payload }) => {
-      state.quotationArr = payload;
+    // quotationAdd: async (state, { payload }) => {
+    //   state.quotationArr = payload;
 
-      let { data: response } = await AddQuotation(payload);
-      if (response) {
-        console.log(response, "respse1");
-        toastSuccess(response.message);
-      }
-    },
+    //   let { data: response } = await AddQuotation(payload);
+    //   if (response) {
+    //     console.log(response, "respse1");
+    //     toastSuccess(response.message);
+    //   }
+    // },
 
-    // quotationUpdate: async (state, { id, payload }) => {
+    // quotationAdd: async (state, { id, payload }) => {
     //   state.quotationObj = payload;
     //   console.log(payload, "payload23"); //whole doc com
     //   console.log(id, "idid");
@@ -128,31 +105,19 @@ const quotationSlice = createSlice({
     //     toastSuccess(response.message);
     //   }
     // },
-    quotationDelete: async (state, { payload }) => {
-      // console.log(payload, "payload-dele");
-      let { data: response } = await deleteQuotation(payload);
-      // console.log(response, "response-dele");
-      if (response) {
-        toastSuccess(response.message);
-      }
-    },
+    // quotationDelete: async (state, { payload }) => {
+    //   // console.log(payload, "payload-dele");
+    //   let { data: response } = await deleteQuotation(payload);
+    //   // console.log(response, "response-dele");
+    //   if (response) {
+    //     toastSuccess(response.message);
+    //   }
+    // },
     setObj: (state, { payload }) => {
       // console.log(payload, "payload3");
       state.quotationObj = payload;
-      // console.log(state, "state7");
-    },
-    quotationUpdateObj: async (state, { payload }) => {
-      // state.quotationObj = payload;
-      // console.log(payload, "payload");
-  
-      let { data: response } = await update(payload, payload.id);
-      if (response) {
-      
-        toastSuccess(response.message);
-      }
     },
   },
-
   extraReducers: {
     [quotationGet.pending]: (state, action) => {
       state.loading = true;
@@ -168,19 +133,19 @@ const quotationSlice = createSlice({
       state.isAuthorized = false;
     },
     //
-    // [quotationUpdate.pending]: (state, action) => {
-    //   state.loading = true;
-    //   state.error = false;
-    // },
-    // [quotationUpdate.fulfilled]: (state, { payload }) => {
-    //   console.log(payload, "payload123");
-    //   state.quotationArr = payload.data;
-    // },
-    // [quotationUpdate.rejected]: (state, action) => {
-    //   state.loading = false;
-    //   state.error = true;
-    //   state.isAuthorized = false;
-    // },
+    [quotationAdd.pending]: (state, action) => {
+      state.loading = true;
+      state.error = false;
+    },
+    [quotationAdd.fulfilled]: (state, { payload }) => {
+      console.log(payload, "payload34");
+    },
+    [quotationAdd.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = true;
+      state.isAuthorized = false;
+      // toastError(action.data.message);
+    },
     // //
     // [quotationDelete.pending]: (state, action) => {
     //   state.loading = true;
@@ -198,11 +163,6 @@ const quotationSlice = createSlice({
   },
 });
 
-export const {
-  quotationAdd,
-  quotationDelete,
-  // quotationUpdate
-  setObj,
-  quotationUpdateObj,
-} = quotationSlice.actions;
+export const { setObj } = quotationSlice.actions;
+
 export default quotationSlice.reducer;

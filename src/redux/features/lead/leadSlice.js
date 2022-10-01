@@ -3,7 +3,7 @@ import {
   AddLead,
   getAllLead,
   deleteLead,
-  update,
+  update,getAllLeadName
 } from "../../../Services/lead.service";
 
 let initialState = {
@@ -16,7 +16,7 @@ import { toastSuccess, toastError } from "../../../utils/toastUtils";
 export const leadGet = createAsyncThunk("auth/leadGet", async (payload) => {
   try {
     console.log(payload, "payload-lead-get");
-    let { data: response } = await getAllLead(payload);
+    let { data: response } = await getAllLeadName(payload);
     console.log(response, "lead-get");
     return response;
   } catch (error) {

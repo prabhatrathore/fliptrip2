@@ -4,6 +4,7 @@ import authReducer from "./features/auth/authSlice";
 import tourReducer from "./features/tour/tourSlice";
 import quotationReducer from "./features/quotation/quotationSlice";
 import leadReducer from "./features/lead/leadSlice";
+import userReducer from "./features/user/userSlice";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   tour: tourReducer,
   quotation: quotationReducer,
   lead: leadReducer,
+  user: userReducer,
 });
 
 export default rootReducer;

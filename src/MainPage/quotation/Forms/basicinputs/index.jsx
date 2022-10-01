@@ -29,7 +29,6 @@ const Basicinputs = () => {
   const [visaRequired, setVisaRequired] = useState(false);
   const [visaOnArrival, setVisaOnArrival] = useState("");
 
-  const [leadId, setLeadId] = useState("");
   const [startDate, setStartDate] = useState("");
   const [expirationDate, setExpirationDate] = useState("");
   ////
@@ -41,10 +40,10 @@ const Basicinputs = () => {
   const [airportTransfer, setAirportTransfer] = useState("");
   const [inputList, setinputList] = useState([{ guestName: "", age: "" }]);
   const [selectedTourIdArr, setSelectedTourIdArr] = useState([]);
-
   const [selectedLeadIdArr, setSelectedLeadIdArr] = useState([]);
+  const [leadName, setLeadName] = useState("");
+  const [leadId, setLeadId] = useState("");
 
-  // console.log(visaRequired, "visaRequired");
   console.log(selectedTourIdArr, "selectedTourIdArr");
   const handleinputchange = (e, index) => {
     const { name, value } = e.target;
@@ -136,8 +135,6 @@ const Basicinputs = () => {
   const handleinputchangeItinerary = (e, index) => {
     // console.log(e, index, "e, index");
     const { name, value } = e.target;
-    // console.log(name, "name");
-    // console.log(e.target, "e.target");
     if (name == "day") {
       if (value > 7 || value < 1) {
         toastError("invalid day, kindly provide valid day");
@@ -168,7 +165,6 @@ const Basicinputs = () => {
 
   const handleLeadValueChange = (e) => {
     setSelectedLeadIdArr(e);
-    console.log(e, "lead");
   };
 
   useEffect(() => {
@@ -176,14 +172,12 @@ const Basicinputs = () => {
   }, []);
 
   const tourValueArr = useSelector((state) => state.tour.tourArr);
-  console.log(tourValueArr, "tourValueArr");
 
   const handleTourValueChange = (e) => {
     setSelectedTourIdArr(e);
-    console.log(e, "eeee");
   };
   // console.log(selectedTourIdArr, "selectedTourIdArr");
-  // console.log(handleTourValueChange, "handleTourValueChange");
+
   const handleSubmit = (e) => {
     e.preventDefault();
     // if (destinationName == "") {
@@ -221,7 +215,9 @@ const Basicinputs = () => {
         tourName: el.tourName,
         description: el.description,
       })),
+      // leadId: [{ leadName: leadName }],
       leadId,
+      leadName,
       startDate,
       expirationDate,
       termAndCondition,
@@ -542,6 +538,22 @@ const Basicinputs = () => {
                       />
                     </div>
                   </div>
+                  <div className="form-group row">
+                    <label className="col-form-label col-md-4">
+                      lead name
+                      <span className="text-danger">*</span>
+                    </label>
+                    <div className="col-md-4">
+                      <Select
+                        options={leadValueArr}
+                        onChange={(e) => {
+                          setLeadId(e.id),
+                            setLeadName(e.value),
+                            console.log(e.value, "lead name ");
+                        }}
+                      />
+                    </div>
+                  </div>
                   {/* 
 
                    */}
@@ -584,7 +596,7 @@ const Basicinputs = () => {
                   </div> */}
                   {/*  */}
 
-                  <div className="col-12">
+                  {/* <div className="col-12">
                     <label className="blue-1 fs-12">Lead Name</label>
                     <Select
                       onChange={handleLeadValueChange}
@@ -599,7 +611,7 @@ const Basicinputs = () => {
                           : []
                       }
                     />
-                  </div>
+                  </div> */}
                   <div className="col-12">
                     <label className="blue-1 fs-12">Tour</label>
                     <Select
